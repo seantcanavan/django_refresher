@@ -1,1 +1,1 @@
-# learn_django
+# django_refresher
