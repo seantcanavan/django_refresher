@@ -51,6 +51,9 @@ test:
 #	# Set lifecycle policy to never expire items
 #	aws s3api put-bucket-lifecycle-configuration --bucket my-test-rsync-versioned-bucket --lifecycle-configuration file://lifecycle_policy.json
 
+tf_init:
+	terraform -chdir=tf/ init -var-file=$(TF_SECRETS_FILE_NAME)
+
 # tf_up will upload the terraform secrets file to a versioned s3 bucket for versioning. this implements a primitive version control system for project secrets
 tf_up: #
     # Copy item.txt to the S3 bucket

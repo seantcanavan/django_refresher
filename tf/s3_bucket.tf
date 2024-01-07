@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "tf_secrets_bucket" {
-  bucket = "seantcanavan_tf_secrets_bucket_${var.stage}"
+  bucket = "seantcanavan-tf-secrets-bucket-${var.stage}"
 }
 
 resource "aws_s3_bucket_ownership_controls" "tf_secrets_bucket" {
