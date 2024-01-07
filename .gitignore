@@ -160,5 +160,5 @@ cython_debug/
 .idea/
 
 # Terraform
-tf/secrets.tfvars
+tf/variables.tf
 tf/.terraform

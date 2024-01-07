@@ -4,7 +4,7 @@
 VENV_NAME?=venv
 PYTHON=${VENV_NAME}/bin/python
 TF_SECRETS_BUCKET_NAME=seantcanavan_tf_secrets
-TF_SECRETS_FILE_NAME=secrets.tfvars
+TF_SECRETS_FILE_NAME=variables.tf
 TF_DIRECTORY_NAME=tf
 
 # Default target executed when no arguments are given to make.
@@ -73,7 +73,7 @@ tf_down:
 	fi
 
 tf_plan:
-	terraform -chdir=tf/ plan
+	terraform -chdir=tf/ plan -var-file=$(TF_SECRETS_FILE_NAME)
 
 tf_apply:
-	terraform -chdir=tf/ apply
+	terraform -chdir=tf/ apply -var-file=$(TF_SECRETS_FILE_NAME)
