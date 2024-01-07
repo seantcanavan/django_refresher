@@ -4,7 +4,7 @@
 VENV_NAME?=venv
 PYTHON=${VENV_NAME}/bin/python
 TF_SECRETS_BUCKET_NAME=seantcanavan_tf_secrets
-TF_SECRETS_FILE_NAME=variables.tf
+TF_SECRETS_FILE_NAME=secrets.tfvars
 TF_DIRECTORY_NAME=tf
 
 # Default target executed when no arguments are given to make.
