@@ -10,7 +10,7 @@ resource "aws_db_instance" "django-psql-db" {
   password             = var.django-psql-db-pass
   skip_final_snapshot  = true
   storage_encrypted    = true
-  storage_type         = "gp2"
+  storage_type         = "gp3"
   username             = var.django-psql-db-user
 }
 
