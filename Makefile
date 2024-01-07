@@ -3,7 +3,7 @@
 # Project variables
 VENV_NAME?=venv
 PYTHON=${VENV_NAME}/bin/python
-TF_SECRETS_BUCKET_NAME=seantcanavan_tf_secrets
+TF_SECRETS_BUCKET_NAME=seantcanavan-tf-secrets-bucket-integration
 TF_SECRETS_FILE_NAME=secrets.tfvars
 TF_DIRECTORY_NAME=tf
 
@@ -54,10 +54,8 @@ test:
 tf_init:
 	terraform -chdir=tf/ init -var-file=$(TF_SECRETS_FILE_NAME)
 
-# tf_up will upload the terraform secrets file to a versioned s3 bucket for versioning. this implements a primitive version control system for project secrets
-tf_up: #
-    # Copy item.txt to the S3 bucket
-    aws s3 cp $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME) s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME)
+tf_up:
+	aws s3 cp $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME) s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME)     # Copy item.txt to the S3 bucket
 
 # tf_down will download the terraform secrets file to your local disk. if your local is newer than the remote, it will prompt before overriding
 tf_down:
@@ -80,3 +78,6 @@ tf_plan:
 
 tf_apply:
 	terraform -chdir=tf/ apply -var-file=$(TF_SECRETS_FILE_NAME)
+
+tf_destroy:
+	terraform -chdir=tf/ destroy -var-file=$(TF_SECRETS_FILE_NAME)
