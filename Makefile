@@ -1,0 +1,79 @@
+# Makefile for managing a Django project
+
+# Project variables
+VENV_NAME?=venv
+PYTHON=${VENV_NAME}/bin/python
+TF_SECRETS_BUCKET_NAME=seantcanavan_tf_secrets
+TF_SECRETS_FILE_NAME=secrets.tfvars
+TF_DIRECTORY_NAME=tf
+
+# Default target executed when no arguments are given to make.
+default: venv
+
+.PHONY: venv
+venv: $(VENV_NAME)/bin/activate
+
+$(VENV_NAME)/bin/activate: requirements.txt
+	test -d $(VENV_NAME) || python3 -m venv $(VENV_NAME)
+	${PYTHON} -m pip install -r requirements.txt
+	touch $(VENV_NAME)/bin/activate
+
+.PHONY: run
+run:
+	$(PYTHON) ./mysite/manage.py runserver
+
+.PHONY: clean
+clean:
+	rm -rf $(VENV_NAME)
+	find . -type f -name '*.pyc' -delete
+	find . -type f -name '*.pyo' -delete
+	find . -type f -name '*~' -delete
+	find . -type d -name '__pycache__' -delete
+
+deps:
+	sudo pacman -Syu --needed terraform
+	terraform -chdir=tf/ init
+
+.PHONY: test
+test:
+	$(PYTHON) ./mysite/manage.py test
+
+
+# Make file commands that deal specifically with initializing and interacting with terraform
+
+#tf_make:
+#	# Create S3 bucket if it does not exist
+#	aws s3api head-bucket --bucket my-test-rsync-versioned-bucket 2>/dev/null || aws s3api create-bucket --bucket my-test-rsync-versioned-bucket
+#	# Enable versioning on the bucket
+#	aws s3api put-bucket-versioning --bucket my-test-rsync-versioned-bucket --versioning-configuration Status=Enabled
+#	# Make the bucket private
+#	aws s3api put-bucket-acl --bucket my-test-rsync-versioned-bucket --acl private
+#	# Set lifecycle policy to never expire items
+#	aws s3api put-bucket-lifecycle-configuration --bucket my-test-rsync-versioned-bucket --lifecycle-configuration file://lifecycle_policy.json
+
+# tf_up will upload the terraform secrets file to a versioned s3 bucket for versioning. this implements a primitive version control system for project secrets
+tf_up: #
+    # Copy item.txt to the S3 bucket
+    aws s3 cp $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME) s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME)
+
+# tf_down will download the terraform secrets file to your local disk. if your local is newer than the remote, it will prompt before overriding
+tf_down:
+	# Get the last modified time of the item in the S3 bucket
+	@aws s3api head-object --bucket my-test-rsync-versioned-bucket --key item.txt | grep LastModified > /tmp/s3_last_modified.txt
+	# Get the last modified time of the local item
+	@stat -c %y item.txt > /tmp/local_last_modified.txt
+	# Compare and prompt if needed
+	@if [ `cat /tmp/s3_last_modified.txt` \< `cat /tmp/local_last_modified.txt` ]; then \
+	    read -p "Remote file is older than local file. Continue to overwrite local file? [y/N] " response; \
+	    if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+	        aws s3 cp s3://my-test-rsync-versioned-bucket/item.txt item.txt; \
+	    fi; \
+	else \
+	    aws s3 cp s3://my-test-rsync-versioned-bucket/item.txt item.txt; \
+	fi
+
+tf_plan:
+	terraform -chdir=tf/ plan
+
+tf_apply:
+	terraform -chdir=tf/ apply
