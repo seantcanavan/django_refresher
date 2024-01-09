@@ -1,5 +1,6 @@
 resource "aws_db_instance" "django-psql-db" {
   allocated_storage    = 20
+  db_name              = "mydb"
   db_subnet_group_name = "default-sean"
   engine               = "postgres"
   engine_version       = "16.1"  # Update this as per the latest available version
@@ -8,11 +9,11 @@ resource "aws_db_instance" "django-psql-db" {
   kms_key_id           = aws_kms_key.django-psql-db-key.arn
   parameter_group_name = "postgres16-sean-pgroup"
   password             = var.django-psql-db-pass
+  publicly_accessible  = true
   skip_final_snapshot  = true
   storage_encrypted    = true
   storage_type         = "gp3"
   username             = var.django-psql-db-user
-  publicly_accessible  = true
 }
 
 
