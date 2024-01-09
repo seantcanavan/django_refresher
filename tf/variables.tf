@@ -15,3 +15,15 @@ variable "django-psql-db-pass" {
   description = "Django Database Pass"
   type        = string
 }
+
+variable "django-secret-key" {
+  default     = "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
+  description = "Django Secret Key"
+  type        = string
+}
+
+variable "django-psql-db-host" {
+  default     = "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+  description = "Django Database Host"
+  type        = string
+}

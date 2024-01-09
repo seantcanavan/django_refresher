@@ -162,3 +162,10 @@ cython_debug/
 # Terraform
 tf/secrets.tfvars
 tf/.terraform
+
+# AWS App Runner configuration
+
+*.pyc
+__pycache__
+media
+staticfiles
