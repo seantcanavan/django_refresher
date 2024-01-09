@@ -20,7 +20,7 @@ $(VENV_NAME)/bin/activate: requirements.txt
 
 .PHONY: run
 run:
-	source venv/bin/activate && source .env && python3 ./mysite/manage.py runserver
+	source venv/bin/activate && source .env && python3 manage.py runserver
 
 .PHONY: clean
 clean:
