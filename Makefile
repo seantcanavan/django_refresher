@@ -1,4 +1,4 @@
-# Makefile for managing a Django project
+SHELL := /bin/bash
 
 # Project variables
 VENV_NAME?=venv
@@ -21,8 +21,6 @@ $(VENV_NAME)/bin/activate: requirements.txt
 .PHONY: run
 run:
 	source venv/bin/activate && source .env && python3 ./mysite/manage.py runserver
-	#source ~/code/github.com/seantcanavan/django_refresher/.env && python3 ./mysite/manage.py runserver
-	#source .env && python3 ./mysite/manage.py runserver
 
 .PHONY: clean
 clean:

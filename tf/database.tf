@@ -1,6 +1,6 @@
 resource "aws_db_instance" "django-psql-db" {
   allocated_storage    = 20
-  db_name              = "mydb"
+  #  db_name              = "mydb"
   db_subnet_group_name = "default-sean"
   engine               = "postgres"
   engine_version       = "16.1"  # Update this as per the latest available version
