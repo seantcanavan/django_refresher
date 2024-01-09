@@ -2,11 +2,11 @@ resource "aws_apprunner_service" "django-app-runner" {
   service_name = "django-${var.stage}"
 
   health_check_configuration {
-    path                = "/polls23"
-    interval            = "5"
-    timeout             = "5"
+    path                = "/polls"
+    interval            = "30"
+    timeout             = "30"
     healthy_threshold   = "1"
-    unhealthy_threshold = "5"
+    unhealthy_threshold = "10"
     protocol            = "HTTP"
   }
 
