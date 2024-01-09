@@ -9,7 +9,6 @@ run:
   pre-run:
     - pip3 install pipenv
     - pipenv install
-    - python3 copy-global-files.py
   command: sh startup.sh
   network:
     port: 8000
