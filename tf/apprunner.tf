@@ -12,20 +12,7 @@ resource "aws_apprunner_service" "django-app-runner" {
       }
 
       code_configuration {
-        configuration_source = "API"
-        code_configuration_values {
-          runtime                       = "PYTHON_3"
-          start_command                 = "python manage.py collectstatic && gunicorn --workers 2 myproject.wsgi"
-          build_command                 = "pip install -r requirements.txt"
-          port                          = "8000"
-          runtime_environment_variables = {
-            "DATABASE_HOST"          = var.django-psql-db-host
-            "DATABASE_PASS"          = var.django-psql-db-pass
-            "DATABASE_USER"          = var.django-psql-db-user
-            "DJANGO_SECRET_KEY"      = var.django-secret-key
-            "DJANGO_SETTINGS_MODULE" = "mysite.settings"
-          }
-        }
+        configuration_source = "REPOSITORY"
       }
     }
 
