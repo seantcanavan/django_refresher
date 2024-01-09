@@ -12,6 +12,7 @@ resource "aws_db_instance" "django-psql-db" {
   storage_encrypted    = true
   storage_type         = "gp3"
   username             = var.django-psql-db-user
+  publicly_accessible  = true
 }
 
 

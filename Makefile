@@ -20,7 +20,9 @@ $(VENV_NAME)/bin/activate: requirements.txt
 
 .PHONY: run
 run:
-	$(PYTHON) ./mysite/manage.py runserver
+	source venv/bin/activate && source .env && python3 ./mysite/manage.py runserver
+	#source ~/code/github.com/seantcanavan/django_refresher/.env && python3 ./mysite/manage.py runserver
+	#source .env && python3 ./mysite/manage.py runserver
 
 .PHONY: clean
 clean:
@@ -39,17 +41,6 @@ test:
 	$(PYTHON) ./mysite/manage.py test
 
 
-# Make file commands that deal specifically with initializing and interacting with terraform
-
-#tf_make:
-#	# Create S3 bucket if it does not exist
-#	aws s3api head-bucket --bucket my-test-rsync-versioned-bucket 2>/dev/null || aws s3api create-bucket --bucket my-test-rsync-versioned-bucket
-#	# Enable versioning on the bucket
-#	aws s3api put-bucket-versioning --bucket my-test-rsync-versioned-bucket --versioning-configuration Status=Enabled
-#	# Make the bucket private
-#	aws s3api put-bucket-acl --bucket my-test-rsync-versioned-bucket --acl private
-#	# Set lifecycle policy to never expire items
-#	aws s3api put-bucket-lifecycle-configuration --bucket my-test-rsync-versioned-bucket --lifecycle-configuration file://lifecycle_policy.json
 
 tf_init:
 	terraform -chdir=tf/ init -var-file=$(TF_SECRETS_FILE_NAME)
