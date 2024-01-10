@@ -8,7 +8,7 @@ build:
       - pip3 install pipenv
       - pipenv install
     post-build:
-      - python3 manage.py test
+      - pipenv run python3 manage.py test
   env:
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
