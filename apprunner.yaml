@@ -7,6 +7,14 @@ build:
       - pip3 install pipenv
       - pipenv install
   env:
+    - name: DATABASE_HOST
+      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+    - name: DATABASE_PASS
+      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
+    - name: DATABASE_USER
+      value: "GycjCWhKDwraNKV3"
+    - name: SECRET_KEY
+      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
 run:
@@ -17,16 +25,15 @@ run:
     - pipenv install
   command: pipenv run gunicorn mysite.wsgi --log-file -
   env:
+    - name: DATABASE_HOST
+      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+    - name: DATABASE_PASS
+      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
+    - name: DATABASE_USER
+      value: "GycjCWhKDwraNKV3"
+    - name: SECRET_KEY
+      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
-  secrets:
-    - name: DATABASE_HOST
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_HOST"
-    - name: DATABASE_PASS
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_PASS"
-    - name: DATABASE_USER
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_USER"
-    - name: SECRET_KEY
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/SECRET_KEY"
   network:
     port: 8000
