@@ -10,12 +10,40 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import json
 import os
 from pathlib import Path
 
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASS = os.getenv("DATABASE_PASS")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
+import boto3
+
+print("printing all environment variables")
+
+# Iterating over all environment variables and their values
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
+
+# Create a Secrets Manager client
+client = boto3.client('secretsmanager')
+
+# Retrieve the secret
+response = client.get_secret_value(SecretId=os.getenv("DJANGO_SECRET_MANAGER"))
+
+print(response)
+
+secret = response['SecretString']
+parsed_secret = json.loads(secret)
+
+# Extracting the individual key-value pairs
+db_host = parsed_secret['DATABASE_HOST']
+db_pass = parsed_secret['DATABASE_PASS']
+db_user = parsed_secret['DATABASE_USER']
+django_secret = parsed_secret['DJANGO_SECRET_KEY']
+
+# Printing the values (or use them as needed)
+print("db_host:", db_host)
+print("db_pass:", db_pass)
+print("db_user:", db_user)
+print("django_secret:", django_secret)
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +52,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = django_secret
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
@@ -94,9 +122,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "mydb",
-        "USER": DATABASE_USER,
-        "PASSWORD": DATABASE_PASS,
-        "HOST": DATABASE_HOST,
+        "USER": db_user,
+        "PASSWORD": db_pass,
+        "HOST": db_host,
         "PORT": "5432",
     }
 }
