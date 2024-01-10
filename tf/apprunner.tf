@@ -30,7 +30,7 @@ resource "aws_apprunner_service" "django-app-runner" {
         code_configuration_values {
           build_command                 = "pip3 install --upgrade pip && pip3 install pipenv && pipenv install"
           port                          = "8000"
-          runtime                       = "PYTHON3"
+          runtime                       = "PYTHON_3"
           runtime_environment_variables = {
             "DATABASE_HOST" : var.django-psql-db-host
             "DATABASE_PASS" : var.django-psql-db-pass
