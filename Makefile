@@ -20,7 +20,7 @@ $(VENV_NAME)/bin/activate: requirements.txt
 
 .PHONY: run
 run:
-	source venv/bin/activate && source .env && python3 ./mysite/manage.py runserver
+	source venv/bin/activate && source .env && python3 manage.py runserver
 
 .PHONY: clean
 clean:
@@ -48,19 +48,30 @@ tf_up:
 
 # tf_down will download the terraform secrets file to your local disk. if your local is newer than the remote, it will prompt before overriding
 tf_down:
-	# Get the last modified time of the item in the S3 bucket
-	@aws s3api head-object --bucket my-test-rsync-versioned-bucket --key item.txt | grep LastModified > /tmp/s3_last_modified.txt
-	# Get the last modified time of the local item
-	@stat -c %y item.txt > /tmp/local_last_modified.txt
-	# Compare and prompt if needed
-	@if [ `cat /tmp/s3_last_modified.txt` \< `cat /tmp/local_last_modified.txt` ]; then \
-	    read -p "Remote file is older than local file. Continue to overwrite local file? [y/N] " response; \
-	    if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
-	        aws s3 cp s3://my-test-rsync-versioned-bucket/item.txt item.txt; \
+	@echo "Getting last modified time from S3"
+	@aws s3api head-object --bucket $(TF_SECRETS_BUCKET_NAME) --key $(TF_SECRETS_FILE_NAME) | grep LastModified > /tmp/s3_last_modified.txt
+	@if [ -f $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME) ]; then \
+	    echo "Checking last modified time of local file"; \
+	    stat -c %y $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME) > /tmp/local_last_modified.txt; \
+	    if [ `cat /tmp/s3_last_modified.txt` \< `cat /tmp/local_last_modified.txt` ]; then \
+	        read -p "Remote file is older than local file. Continue to overwrite local file? [y/N] " response; \
+	        if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+	            echo "Overwriting local file"; \
+	            aws s3 cp s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME) $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME); \
+	        else \
+	            echo "Not overwriting local file"; \
+	        fi; \
+	    else \
+	        echo "Downloading from S3"; \
+	        aws s3 cp s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME) $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME); \
 	    fi; \
 	else \
-	    aws s3 cp s3://my-test-rsync-versioned-bucket/item.txt item.txt; \
+	    echo "Local file does not exist. Downloading from S3."; \
+	    aws s3 cp s3://$(TF_SECRETS_BUCKET_NAME)/$(TF_SECRETS_FILE_NAME) $(TF_DIRECTORY_NAME)/$(TF_SECRETS_FILE_NAME); \
 	fi
+
+
+
 
 tf_plan:
 	terraform -chdir=tf/ plan -var-file=$(TF_SECRETS_FILE_NAME)
