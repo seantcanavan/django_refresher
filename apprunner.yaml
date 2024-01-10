@@ -13,7 +13,7 @@ build:
       value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
     - name: DATABASE_USER
       value: "GycjCWhKDwraNKV3"
-    - name: SECRET_KEY
+    - name: DJANGO_SECRET_KEY
       value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
@@ -31,7 +31,7 @@ run:
       value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
     - name: DATABASE_USER
       value: "GycjCWhKDwraNKV3"
-    - name: SECRET_KEY
+    - name: DJANGO_SECRET_KEY
       value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
