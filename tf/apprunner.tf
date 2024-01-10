@@ -25,9 +25,20 @@ resource "aws_apprunner_service" "django-app-runner" {
         value = "django-${var.stage}"
       }
 
-
       code_configuration {
-        configuration_source = "REPOSITORY"
+        configuration_source = "API"
+        code_configuration_values {
+          build_command                 = "pip3 install --upgrade pip && pip3 install pipenv && pipenv install"
+          port                          = "8000"
+          runtime                       = "PYTHON3"
+          runtime_environment_variables = {
+            "DATABASE_HOST" : var.django-psql-db-host
+            "DATABASE_PASS" : var.django-psql-db-pass
+            "DATABASE_USER" : var.django-psql-db-user
+            "SECRET_KEY" : var.django-secret-key
+          }
+          start_command = "pipenv run gunicorn mysite.wsgi --log-file -"
+        }
       }
     }
 
