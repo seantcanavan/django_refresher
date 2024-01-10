@@ -10,12 +10,48 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import json
 import os
 from pathlib import Path
 
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASS = os.getenv("DATABASE_PASS")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
+import boto3
+
+print("printing all environment variables")
+
+# Iterating over all environment variables and their values
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
+
+# Create a Secrets Manager client
+client = boto3.client('secretsmanager')
+
+STAGE = os.getenv("STAGE")
+SECRET_NAME = os.getenv("django-integration")
+
+# Retrieve the secret
+response = client.get_secret_value(SecretId=SECRET_NAME)
+
+print(response)
+
+# The actual secret is in the 'SecretString' field of the response
+if 'SecretString' in response:
+    secret = response['SecretString']
+    parsed_secret = json.loads(secret)
+
+    # Extracting the individual key-value pairs
+    key1 = parsed_secret['key1']
+    key2 = parsed_secret['key2']
+    key3 = parsed_secret['key3']
+    key4 = parsed_secret['key4']
+
+    # Printing the values (or use them as needed)
+    print("key1:", key1)
+    print("key2:", key2)
+    print("key3:", key3)
+    print("key4:", key4)
+else:
+    # If the secret is not a string (e.g., a binary secret), handle it here
+    print("Secret is not in string format.")
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
