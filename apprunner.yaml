@@ -6,20 +6,9 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
-    post-build:
-      - pipenv run python3 manage.py test
   env:
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
-  secrets:
-    - name: DATABASE_HOST
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_HOST"
-    - name: DATABASE_PASS
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_PASS"
-    - name: DATABASE_USER
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/DATABASE_USER"
-    - name: SECRET_KEY
-      value-from: "arn:aws:secretsmanager:us-east-2:205503630745:secret:django-integratoin-XIPc97/SECRET_KEY"
 run:
   runtime-version: 3.11
   pre-run:
