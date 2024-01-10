@@ -35,6 +35,7 @@ resource "aws_apprunner_service" "django-app-runner" {
             "DATABASE_HOST" : var.django-psql-db-host
             "DATABASE_PASS" : var.django-psql-db-pass
             "DATABASE_USER" : var.django-psql-db-user
+            "DJANGO_SETTINGS_MODULE" : "mysite.settings"
             "SECRET_KEY" : var.django-secret-key
           }
           start_command = "pipenv run gunicorn mysite.wsgi --log-file -"
