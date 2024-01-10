@@ -3,13 +3,22 @@ runtime: python311
 build:
   commands:
     build:
-      - pip3 install -r requirements.txt
+      #      - pip3 install -r requirements.txt
+      - pip3 install --upgrade pip
+      - pip3 install pipenv
+      - pipenv install
+    post-build:
+      - python3 manage.py test
+  env:
+    - name: DJANGO_SETTINGS_MODULE
+      value: "mysite.settings"
 run:
   runtime-version: 3.11
   pre-run:
     - pip3 install --upgrade pip
-    - pip3 install pipenv
+    - pip3 install --upgrade pip
     - pipenv install
-  command: sh startup.sh
+  command: pipenv run gunicorn mysite.wsgi --log-file -
   network:
     port: 8000
+  #  command: sh startup.sh
