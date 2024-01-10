@@ -26,32 +26,27 @@ for key, value in os.environ.items():
 client = boto3.client('secretsmanager')
 
 STAGE = os.getenv("STAGE")
-SECRET_NAME = os.getenv("django-integration")
+SECRET_NAME = os.getenv("DJANGO_SECRET_MANAGER")
 
 # Retrieve the secret
 response = client.get_secret_value(SecretId=SECRET_NAME)
 
 print(response)
 
-# The actual secret is in the 'SecretString' field of the response
-if 'SecretString' in response:
-    secret = response['SecretString']
-    parsed_secret = json.loads(secret)
+secret = response['SecretString']
+parsed_secret = json.loads(secret)
 
-    # Extracting the individual key-value pairs
-    key1 = parsed_secret['key1']
-    key2 = parsed_secret['key2']
-    key3 = parsed_secret['key3']
-    key4 = parsed_secret['key4']
+# Extracting the individual key-value pairs
+db_host = parsed_secret['DATABASE_HOST']
+db_pass = parsed_secret['DATABASE_PASS']
+db_user = parsed_secret['DATABASE_USER']
+django_secret = parsed_secret['DJANGO_SECRET_KEY']
 
-    # Printing the values (or use them as needed)
-    print("key1:", key1)
-    print("key2:", key2)
-    print("key3:", key3)
-    print("key4:", key4)
-else:
-    # If the secret is not a string (e.g., a binary secret), handle it here
-    print("Secret is not in string format.")
+# Printing the values (or use them as needed)
+print("db_host:", db_host)
+print("db_pass:", db_pass)
+print("db_user:", db_user)
+print("django_secret:", django_secret)
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,7 +55,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = django_secret
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
@@ -130,9 +125,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "mydb",
-        "USER": DATABASE_USER,
-        "PASSWORD": DATABASE_PASS,
-        "HOST": DATABASE_HOST,
+        "USER": db_user,
+        "PASSWORD": db_pass,
+        "HOST": db_host,
         "PORT": "5432",
     }
 }
