@@ -12,14 +12,6 @@ build:
   env:
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
-    - name: DATABASE_HOST
-      value: ${DATABASE_HOST}
-    - name: DATABASE_PASS
-      value: ${DATABASE_PASS}
-    - name: DATABASE_USER
-      value: ${DATABASE_USER}
-    - name: SECRET_KEY
-      value: ${DJANGO_SECRET_KEY}
 run:
   runtime-version: 3.11
   pre-run:
