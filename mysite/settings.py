@@ -25,11 +25,8 @@ for key, value in os.environ.items():
 # Create a Secrets Manager client
 client = boto3.client('secretsmanager')
 
-STAGE = os.getenv("STAGE")
-SECRET_NAME = os.getenv("DJANGO_SECRET_MANAGER")
-
 # Retrieve the secret
-response = client.get_secret_value(SecretId=SECRET_NAME)
+response = client.get_secret_value(SecretId=os.getenv("DJANGO_SECRET_MANAGER"))
 
 print(response)
 
