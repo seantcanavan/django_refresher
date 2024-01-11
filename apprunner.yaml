@@ -7,25 +7,17 @@ build:
       - pip3 install pipenv
       - pipenv install
       #    post-build:
-      - pipenv run python3 manage.py test
-      - echo $DATABASE_HOST > out.txt
-      - cat out.txt
+
+  #      - echo $DATABASE_HOST > out.txt
+  #      - cat out.txt
   #      - pipenv run python3 manage.py makemigrations
   #      - pipenv run python3 manage.py migrate
-  env:
-    - name: DATABASE_HOST
-      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
-    - name: DATABASE_PASS
-      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
-    - name: DATABASE_USER
-      value: "GycjCWhKDwraNKV3"
-    - name: DJANGO_SECRET_KEY
-      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
-    - name: DJANGO_SETTINGS_MODULE
-      value: "mysite.settings"
 run:
   runtime-version: 3.11
   pre-run:
+    - pipenv run python3 manage.py test
+    - pipenv run python3 manage.py makemigrations
+    - pipenv run python3 manage.py migrate
     - pip3 install --upgrade pip
     - pip3 install pipenv
     - pipenv install
