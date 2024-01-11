@@ -3,7 +3,7 @@ runtime: python311
 build:
   env:
     - name: PIPENV_IGNORE_VIRTUALENVS
-      value: "1"
+      value: "0"
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
     - name: DATABASE_PASS
@@ -30,7 +30,7 @@ run:
   command: pipenv run gunicorn mysite.wsgi --log-file -
   env:
     - name: PIPENV_IGNORE_VIRTUALENVS
-      value: "1"
+      value: "0"
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
     - name: DATABASE_PASS
