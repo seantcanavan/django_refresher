@@ -8,9 +8,10 @@ build:
       - pipenv install
       #    post-build:
       - pipenv run python3 manage.py test
-      - echo $DATABASE_HOST
-      - pipenv run python3 manage.py makemigrations
-      - pipenv run python3 manage.py migrate
+      - echo $DATABASE_HOST > out.txt
+      - cat out.txt
+  #      - pipenv run python3 manage.py makemigrations
+  #      - pipenv run python3 manage.py migrate
   env:
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
