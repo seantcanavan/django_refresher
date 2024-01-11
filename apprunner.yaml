@@ -17,12 +17,15 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
-    post-build:
-      #      - echo $DATABASE_HOST > out.txt
-      #      - cat out.txt
       - pipenv run python3 db_test.py
       - pipenv run python3 manage.py makemigrations
       - pipenv run python3 manage.py migrate
+    post-build:
+    #      - echo $DATABASE_HOST > out.txt
+    #      - cat out.txt
+#      - pipenv run python3 db_test.py
+#      - pipenv run python3 manage.py makemigrations
+#      - pipenv run python3 manage.py migrate
 run:
   runtime-version: 3.11
   pre-run:
