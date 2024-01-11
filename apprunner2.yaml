@@ -1,0 +1,68 @@
+version: 1.0
+runtime: python311
+build:
+  env:
+    - name: PIPENV_IGNORE_VIRTUALENVS
+      value: "1"
+    - name: DATABASE_HOST
+      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+    - name: DATABASE_PASS
+      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
+    - name: DATABASE_USER
+      value: "GycjCWhKDwraNKV3"
+    - name: DJANGO_SECRET_KEY
+      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
+    - name: DJANGO_SETTINGS_MODULE
+      value: "mysite.settings"
+  commands:
+    #    pre-build:
+    build:
+      - pip3 install --upgrade pip
+      - pip3 install -r requirements.txt
+      - python3 env_test.py
+      - python3 manage.py makemigrations
+      - pipenv run python3 env_test.py
+      - pipenv run python3 manage.py makemigrations
+    #      - python3 env_test.py
+    #      - pipenv run python3 env_test.py
+    #      - pipenv run python3 db_test.py
+    #      - pipenv run python3 manage.py makemigrations
+    #      - pipenv run python3 manage.py migrate
+    post-build:
+      #      - python3 env_test.py
+      #      - pipenv run python3 env_test.py
+      #      - echo $DATABASE_HOST > out.txt
+      #      - cat out.txt
+      #      - pipenv run python3 db_test.py
+      - pipenv run python3 manage.py migrate
+run:
+  runtime-version: 3.11
+  pre-run:
+    - pip3 install --upgrade pip
+    - pip3 install pipenv
+    - pipenv install
+    - python3 env_test.py
+    - pipenv run python3 env_test.py
+    - pipenv run python3 manage.py test
+    #    - pipenv run python3 db_test.py
+    #    - pipenv run python3 manage.py makemigrations
+    #    - pipenv run python3 manage.py migrate
+  #    - pip3 install --upgrade pip
+  #    - pip3 install pipenv
+  #    - pipenv install
+  command: pipenv run gunicorn mysite.wsgi --log-file -
+  env:
+    - name: PIPENV_IGNORE_VIRTUALENVS
+      value: "1"
+    - name: DATABASE_HOST
+      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+    - name: DATABASE_PASS
+      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
+    - name: DATABASE_USER
+      value: "GycjCWhKDwraNKV3"
+    - name: DJANGO_SECRET_KEY
+      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
+    - name: DJANGO_SETTINGS_MODULE
+      value: "mysite.settings"
+  network:
+    port: 8000
