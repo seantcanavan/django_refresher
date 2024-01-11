@@ -35,10 +35,10 @@ deps:
 	terraform -chdir=tf/ init
 
 migrations:
-	source venv/bin/activate && source .env && pipenv python3 manage.py makemigrations
+	source venv/bin/activate && source .env && pipenv run python3 manage.py makemigrations
 
 migrate:
-	source venv/bin/activate && source .env && pipenv python3 manage.py migrate
+	source venv/bin/activate && source .env && pipenv run python3 manage.py migrate
 
 .PHONY: test
 test:
