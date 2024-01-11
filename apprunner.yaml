@@ -6,7 +6,7 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
-    post-build:
+      #    post-build:
       - pipenv run python3 manage.py test
       - echo $DATABASE_HOST
       - pipenv run python3 manage.py makemigrations
