@@ -12,7 +12,7 @@ def main():
     DATABASE_PASS = os.getenv("DATABASE_PASS")
     DATABASE_HOST = os.getenv("DATABASE_HOST")
 
-    print("printing database creds")
+    print("MANAGE.PY: printing database creds")
     print(DATABASE_USER, DATABASE_PASS, DATABASE_HOST)
 
     print("MANAGE.PY: printing all environment variables")
