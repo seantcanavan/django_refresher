@@ -1,7 +1,6 @@
 version: 1.0
 runtime: python311
 build:
-  env:
   commands:
     build:
       - pip3 install --upgrade pip
