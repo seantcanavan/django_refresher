@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = [".awsapprunner.com", "127.0.0.1", "localhost"]
 
+CSRF_TRUSTED_ORIGINS = ['https://pfdygmgjxq.us-east-2.awsapprunner.com']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
