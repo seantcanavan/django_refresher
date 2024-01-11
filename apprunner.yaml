@@ -23,7 +23,6 @@ run:
     - pip3 install --upgrade pip
     - pip3 install pipenv
     - pipenv install
-  #  command: pipenv run gunicorn mysite.wsgi --log-file -
   command: sh startup.sh
 
   network:
