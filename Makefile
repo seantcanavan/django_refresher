@@ -34,6 +34,12 @@ deps:
 	sudo pacman -Syu --needed terraform
 	terraform -chdir=tf/ init
 
+migrations:
+	source venv/bin/activate && source .env && pipenv python3 manage.py makemigrations
+
+migrate:
+	source venv/bin/activate && source .env && pipenv python3 manage.py migrate
+
 .PHONY: test
 test:
 	source venv/bin/activate && pipenv run python3 manage.py test

@@ -14,8 +14,8 @@ build:
       - which pip3 > out.txt
       - cat out.txt
       - pipenv run python3 manage.py test
-      - pipenv run python manage.py makemigrations
-      - pipenv run python manage.py migrate
+      - pipenv run python3 manage.py makemigrations
+      - pipenv run python3 manage.py migrate
   env:
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
