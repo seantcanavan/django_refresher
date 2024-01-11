@@ -15,12 +15,13 @@ build:
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
   commands:
-    pre-build:
-    #      - python3 env_test.py
+    #    pre-build:
     build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
+      - python3 env_test.py
+      - pipenv run python3 env_test.py
       - pipenv run python3 manage.py makemigrations
     #      - python3 env_test.py
     #      - pipenv run python3 env_test.py
