@@ -11,12 +11,9 @@ TF_DIRECTORY_NAME=tf
 default: venv
 
 .PHONY: venv
-venv: $(VENV_NAME)/bin/activate
-
-$(VENV_NAME)/bin/activate: requirements.txt
-	test -d $(VENV_NAME) || python3 -m venv $(VENV_NAME)
-	${PYTHON} -m pip install -r requirements.txt
-	touch $(VENV_NAME)/bin/activate
+venv:
+	python3 -m venv $(VENV_NAME)
+	source venv/bin/activate && pip3 install --upgrade pip && pip3 install pipenv && pipenv install
 
 .PHONY: run
 run:
