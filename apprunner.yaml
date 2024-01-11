@@ -13,7 +13,7 @@ build:
       - cat out.txt
       - which pip3 > out.txt
       - cat out.txt
-      - python3 manage.py test
+      - pipenv python3 manage.py test
   env:
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
