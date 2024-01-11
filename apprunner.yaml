@@ -17,9 +17,9 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
-      - pipenv run python3 db_test.py
-      - pipenv run python3 manage.py makemigrations
-      - pipenv run python3 manage.py migrate
+    #      - pipenv run python3 db_test.py
+    #      - pipenv run python3 manage.py makemigrations
+    #      - pipenv run python3 manage.py migrate
     post-build:
     #      - echo $DATABASE_HOST > out.txt
     #      - cat out.txt
@@ -33,6 +33,7 @@ run:
     - pip3 install pipenv
     - pipenv install
     - pipenv run python3 manage.py test
+    - pipenv run python3 db_test.py
     - pipenv run python3 manage.py makemigrations
     - pipenv run python3 manage.py migrate
     - pip3 install --upgrade pip
