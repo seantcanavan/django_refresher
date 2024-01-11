@@ -17,6 +17,9 @@ DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASS = os.getenv("DATABASE_PASS")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 
+print("printing database creds")
+print(DATABASE_USER, DATABASE_PASS, DATABASE_HOST)
+
 print("SETTINGS.PY: printing all environment variables")
 
 # Iterating over all environment variables and their values

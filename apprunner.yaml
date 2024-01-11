@@ -8,6 +8,7 @@ build:
       - pipenv install
     post-build:
       - pipenv run python3 manage.py test
+      - echo $DATABASE_HOST
       - pipenv run python3 manage.py makemigrations
       - pipenv run python3 manage.py migrate
   env:
