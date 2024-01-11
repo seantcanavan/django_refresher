@@ -7,8 +7,6 @@ build:
       - pip3 install pipenv
       - pipenv install
     post-build:
-      - which python > out.txt
-      - cat out.txt
       - which python3 > out.txt
       - cat out.txt
       - which pip > out.txt
