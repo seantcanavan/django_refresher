@@ -33,8 +33,7 @@ deps:
 
 .PHONY: test
 test:
-	$(PYTHON) ./mysite/manage.py test
-
+	$(PYTHON) manage.py test
 
 
 tf_init:
