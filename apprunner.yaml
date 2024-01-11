@@ -14,7 +14,7 @@ build:
       value: "mysite.settings"
   commands:
     pre-build:
-      python3 env_test.py
+      - python3 env_test.py
     build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
