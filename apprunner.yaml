@@ -18,9 +18,9 @@ build:
     #    pre-build:
     build:
       - pip3 install --upgrade pip
-      - pip3 install pipenv
-      - pipenv install
+      - pip3 install -r requirements.txt
       - python3 env_test.py
+      - python3 manage.py makemigrations
       - pipenv run python3 env_test.py
       - pipenv run python3 manage.py makemigrations
     #      - python3 env_test.py
