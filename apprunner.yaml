@@ -23,19 +23,21 @@ build:
     #      - pipenv run python3 env_test.py pipenvbuild
     #      - python3 env_test.py python3buildafterpipenv
     post-build:
-      #      - python3 env_test.py python3postbuild
-      #      - pipenv run python3 env_test.py pipenvpostbuild
-      #      - pipenv run python3 env_test.py
-      - pipenv run python3 manage.py test
+    #      - python3 env_test.py python3postbuild
+    #      - pipenv run python3 env_test.py pipenvpostbuild
+    #      - pipenv run python3 env_test.py
+#      - pipenv run python3 manage.py test
 run:
   runtime-version: 3.11
   pre-run:
-    - python3 env_test.py python3prerunbeforepipenv
+    #    - python3 env_test.py python3prerunbeforepipenv
     - pip3 install --upgrade pip
     - pip3 install pipenv
     - pipenv install
-    - pipenv run python3 env_test.py pipenvprerun
-    - python3 env_test.py python3prerunafterpipenv
+    #    - pipenv run python3 env_test.py pipenvprerun
+    #    - python3 env_test.py python3prerunafterpipenv
+    - pipenv run python3 manage.py test
+
   command: pipenv run gunicorn mysite.wsgi --log-file -
   env:
     - name: DATABASE_HOST
