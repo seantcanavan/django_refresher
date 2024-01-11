@@ -2,7 +2,8 @@ SHELL := /bin/bash
 
 # Project variables
 VENV_NAME?=venv
-PYTHON=${VENV_NAME}/bin/python
+PYTHON3=${VENV_NAME}/bin/python3
+PIP3=${VENV_NAME}/bin/pip3
 TF_SECRETS_BUCKET_NAME=seantcanavan-tf-secrets-bucket-integration
 TF_SECRETS_FILE_NAME=secrets.tfvars
 TF_DIRECTORY_NAME=tf
@@ -17,23 +18,25 @@ venv:
 
 .PHONY: run
 run:
-	source venv/bin/activate && source .env && python3 manage.py runserver
+	source venv/bin/activate && source .env && pipenv run python3 manage.py runserver
 
 .PHONY: clean
 clean:
 	rm -rf $(VENV_NAME)
+	rm Pipfile.lock
 	find . -type f -name '*.pyc' -delete
 	find . -type f -name '*.pyo' -delete
 	find . -type f -name '*~' -delete
 	find . -type d -name '__pycache__' -delete
 
+.PHONY: deps
 deps:
 	sudo pacman -Syu --needed terraform
 	terraform -chdir=tf/ init
 
 .PHONY: test
 test:
-	$(PYTHON) manage.py test
+	source venv/bin/activate && pipenv run python3 manage.py test
 
 
 tf_init:
