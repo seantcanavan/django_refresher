@@ -13,19 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-DATABASE_USER = os.getenv("DATABASE_USER")
-DATABASE_PASS = os.getenv("DATABASE_PASS")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
-
-print("SETTINGS.PY: printing database creds")
-print(DATABASE_USER, DATABASE_PASS, DATABASE_HOST)
-
-print("SETTINGS.PY: printing all environment variables")
-
-# Iterating over all environment variables and their values
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
-
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = [".awsapprunner.com", "127.0.0.1", "localhost"]
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -99,13 +90,14 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "mydb",
-        "USER": DATABASE_USER,
-        "PASSWORD": DATABASE_PASS,
-        "HOST": DATABASE_HOST,
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASS"),
+        "HOST": os.getenv("DATABASE_HOST"),
         "PORT": "5432",
     }
 }
@@ -138,11 +130,6 @@ TIME_ZONE = "America/Chicago"
 USE_I18N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
