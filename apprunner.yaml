@@ -13,14 +13,18 @@ build:
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
   commands:
+    pre-build:
+      python3 env_test.py
     build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
+      - pipenv run python3 env_test.py
     #      - pipenv run python3 db_test.py
     #      - pipenv run python3 manage.py makemigrations
     #      - pipenv run python3 manage.py migrate
     post-build:
+      - pipenv run python3 env_test.py
     #      - echo $DATABASE_HOST > out.txt
     #      - cat out.txt
 #      - pipenv run python3 db_test.py
@@ -29,16 +33,17 @@ build:
 run:
   runtime-version: 3.11
   pre-run:
-    - pip3 install --upgrade pip
-    - pip3 install pipenv
-    - pipenv install
+    #    - pip3 install --upgrade pip
+    #    - pip3 install pipenv
+    #    - pipenv install
+    - pipenv run python3 env_test.py
     - pipenv run python3 manage.py test
-    - pipenv run python3 db_test.py
-    - pipenv run python3 manage.py makemigrations
-    - pipenv run python3 manage.py migrate
-    - pip3 install --upgrade pip
-    - pip3 install pipenv
-    - pipenv install
+    #    - pipenv run python3 db_test.py
+    #    - pipenv run python3 manage.py makemigrations
+    #    - pipenv run python3 manage.py migrate
+  #    - pip3 install --upgrade pip
+  #    - pip3 install pipenv
+  #    - pipenv install
   command: pipenv run gunicorn mysite.wsgi --log-file -
   env:
     - name: DATABASE_HOST
