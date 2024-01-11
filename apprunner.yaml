@@ -6,6 +6,8 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
+    post-build:
+      - python manage.py test
   env:
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
