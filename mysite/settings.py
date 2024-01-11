@@ -17,6 +17,12 @@ DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASS = os.getenv("DATABASE_PASS")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 
+print("printing all environment variables")
+
+# Iterating over all environment variables and their values
+for key, value in os.environ.items():
+    print(f"{key}: {value}")
+
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
