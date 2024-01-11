@@ -4,14 +4,13 @@ build:
   commands:
     build:
       - pip3 install -r requirements.txt
-run:
-  runtime-version: 3.11
-  command: sh startup.sh
-  network:
-    port: 8000
+    post-build:
+      - python3 manage.py makemigrations
+      - python3 manage.py migrate
+      - python3 manage.py collectstatic
+      - python3 manage.py test
+      - python3 manage.py createsuperuser
   env:
-    - name: PIPENV_IGNORE_VIRTUALENVS
-      value: "1"
     - name: DATABASE_HOST
       value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
     - name: DATABASE_PASS
@@ -22,3 +21,8 @@ run:
       value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
+run:
+  runtime-version: 3.11
+  command: pipenv run gunicorn mysite.wsgi --log-file -
+  network:
+    port: 8000
