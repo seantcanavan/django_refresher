@@ -10,40 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import json
 import os
 from pathlib import Path
-
-import boto3
-
-print("printing all environment variables")
-
-# Iterating over all environment variables and their values
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
-
-# Create a Secrets Manager client
-client = boto3.client('secretsmanager')
-
-# Retrieve the secret
-response = client.get_secret_value(SecretId=os.getenv("DJANGO_SECRET_MANAGER"))
-
-print(response)
-
-secret = response['SecretString']
-parsed_secret = json.loads(secret)
-
-# Extracting the individual key-value pairs
-db_host = parsed_secret['DATABASE_HOST']
-db_pass = parsed_secret['DATABASE_PASS']
-db_user = parsed_secret['DATABASE_USER']
-django_secret = parsed_secret['DJANGO_SECRET_KEY']
-
-# Printing the values (or use them as needed)
-print("db_host:", db_host)
-print("db_pass:", db_pass)
-print("db_user:", db_user)
-print("django_secret:", django_secret)
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,13 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = django_secret
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = [".awsapprunner.com", "127.0.0.1", "localhost"]
+
+CSRF_TRUSTED_ORIGINS = ['https://pfdygmgjxq.us-east-2.awsapprunner.com']
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -118,13 +91,14 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "mydb",
-        "USER": db_user,
-        "PASSWORD": db_pass,
-        "HOST": db_host,
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASS"),
+        "HOST": os.getenv("DATABASE_HOST"),
         "PORT": "5432",
     }
 }
@@ -157,11 +131,6 @@ TIME_ZONE = "America/Chicago"
 USE_I18N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

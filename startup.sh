@@ -1,5 +1,6 @@
 #!/bin/bash
-pip3 install --upgrade pip
-pip3 install pipenv
-pipenv install
-pipenv run gunicorn mysite.wsgi --log-file -
+pipenv run python3 manage.py collectstatic
+pipenv run python3 manage.py test
+pipenv run python3 manage.py makemigrations
+pipenv run python3 manage.py migrate
+pipenv run gunicorn --workers 2 mysite.wsgi

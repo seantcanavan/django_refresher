@@ -6,24 +6,23 @@ build:
       - pip3 install --upgrade pip
       - pip3 install pipenv
       - pipenv install
-  #    post-build:
-  #      - python3 manage.py test
+run:
   env:
+    - name: DATABASE_HOST
+      value: "django-psql-db-integration.csfkk1qfrwcy.us-east-2.rds.amazonaws.com"
+    - name: DATABASE_PASS
+      value: "2qZVgxQgQN6a7pKw37KY6MNF84RGTipQ"
+    - name: DATABASE_USER
+      value: "GycjCWhKDwraNKV3"
+    - name: DJANGO_SECRET_KEY
+      value: "django-insecure-e_8rwh&ywsji&zh=vb9rmd4z0%a!%u(zlge_%g5r^&p49euq%$"
     - name: DJANGO_SETTINGS_MODULE
       value: "mysite.settings"
-    - name: DJANGO_SECRET_MANAGER
-      value: "django-integration"
-run:
   runtime-version: 3.11
   pre-run:
     - pip3 install --upgrade pip
     - pip3 install pipenv
     - pipenv install
-  command: pipenv run gunicorn mysite.wsgi --log-file -
+  command: sh startup.sh
   network:
     port: 8000
-  env:
-    - name: DJANGO_SETTINGS_MODULE
-      value: "mysite.settings"
-    - name: DJANGO_SECRET_MANAGER
-      value: "django-integration"
