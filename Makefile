@@ -23,7 +23,7 @@ run:
 .PHONY: clean
 clean:
 	rm -rf $(VENV_NAME)
-	rm Pipfile.lock
+	rm -f Pipfile.lock
 	find . -type f -name '*.pyc' -delete
 	find . -type f -name '*.pyo' -delete
 	find . -type f -name '*~' -delete
