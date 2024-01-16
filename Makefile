@@ -1,10 +1,11 @@
 SHELL := /bin/bash
 
+.PHONY: venv run clean deps tf_init tf_plan tf_apply tf_destroy
+
 # Project variables
 VENV_NAME?=venv
 PYTHON3=${VENV_NAME}/bin/python3
 PIP3=${VENV_NAME}/bin/pip3
-TF_SECRETS_BUCKET_NAME=seantcanavan-tf-secrets-bucket-integration
 TF_SECRETS_FILE_NAME=secrets.tfvars
 TF_DIRECTORY_NAME=tf
 stage ?= integration
@@ -12,16 +13,13 @@ stage ?= integration
 # Default target executed when no arguments are given to make.
 default: venv
 
-.PHONY: venv
 venv:
 	python3 -m venv $(VENV_NAME)
 	source venv/bin/activate && pip3 install --upgrade pip && pip3 install pipenv && pipenv install
 
-.PHONY: run
 run:
 	source venv/bin/activate && source .env && pipenv run python3 manage.py runserver
 
-.PHONY: clean
 clean:
 	rm -rf $(VENV_NAME)
 	rm -f Pipfile.lock
@@ -30,7 +28,9 @@ clean:
 	find . -type f -name '*~' -delete
 	find . -type d -name '__pycache__' -delete
 
-.PHONY: deps
+deploy:
+	git checkout main && git pull --all --prune && git checkout django-integration && git reset --hard origin/main && git push -f && git checkout main
+
 deps:
 	sudo pacman -Syu --needed terraform
 	terraform -chdir=tf/ init
