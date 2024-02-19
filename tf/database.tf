@@ -1,3 +1,8 @@
+locals {
+  instance_class = var.stage == "production" ? "db.t4g.micro" : var.stage == "staging" ? "db.t4g.micro" : "db.t4g.micro"
+}
+
+
 resource "aws_db_instance" "django-psql-db" {
   allocated_storage    = 20
   #  db_name              = "mydb"
@@ -5,7 +10,7 @@ resource "aws_db_instance" "django-psql-db" {
   engine               = "postgres"
   engine_version       = "16.1"  # Update this as per the latest available version
   identifier           = "django-psql-db-${var.stage}"
-  instance_class       = "db.t4g.micro"
+  instance_class       = local.instance_class
   kms_key_id           = aws_kms_key.django-psql-db-key.arn
   parameter_group_name = "postgres16-sean-pgroup"
   password             = var.django-psql-db-pass

@@ -4,6 +4,8 @@ from django.db import models
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField("date published")
+    test_int = models.IntegerField(default=0)
+    another_int = models.IntegerField(default=0)
 
 
 class Choice(models.Model):
